@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login & Register</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(to right, #ffafbd, #ffc3a0);
+            margin: 0;
+        }
+
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            font-weight: 500;
+        }
+
+        .btn-primary {
+            background-color: #ff6f61;
+            border-color: #ff6f61;
+        }
+
+        .btn-primary:hover {
+            background-color: #ff4a3d;
+            border-color: #ff4a3d;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .fade-in {
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 0.9em;
+            color: #555;
+        }
+
+        a {
+            color: #ff6f61;
+        }
+
+        a:hover {
+            color: #ff4a3d;
+        }
+
+        .home-container {
+            text-align: center;
+        }
+
+        .home-container h1 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+
+        .home-container p {
+            font-size: 1.2em;
+            margin-bottom: 20px;
+        }
+
+        .highlight {
+            background-color: #ffafbd;
+            padding: 10px;
+            border-radius: 5px;
+            color: #fff;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container" id="login-form">
+        <h2 class="text-center">Login</h2>
+        <form onsubmit="login(event)">
+            <div class="form-group">
+                <label for="login-email">Email address</label>
+                <input type="email" class="form-control" id="login-email" placeholder="Enter email" required>
+            </div>
+            <div class="form-group">
+                <label for="login-password">Password</label>
+                <input type="password" class="form-control" id="login-password" placeholder="Password" required>
+            </div>
+            <button type="submit" class="btn btn-primary btn-block">Login</button>
+            <p class="text-center mt-3">Don't have an account? <a href="#" onclick="showRegister()">Register</a></p>
+        </form>
+    </div>
+    <div class="container hidden" id="register-form">
+        <h2 class="text-center">Register</h2>
+        <form onsubmit="register(event)">
+            <div class="form-group">
+                <label for="register-name">Full Name</label>
+                <input type="text" class="form-control" id="register-name" placeholder="Enter full name" required>
+            </div>
+            <div class="form-group">
+                <label for="register-email">Email address</label>
+                <input type="email" class="form-control" id="register-email" placeholder="Enter email" required>
+            </div>
+            <div class="form-group">
+                <label for="register-password">Password</label>
+                <input type="password" class="form-control" id="register-password" placeholder="Password" required>
+            </div>
+            <button type="submit" class="btn btn-primary btn-block">Register</button>
+            <p class="text-center mt-3">Already have an account? <a href="#" onclick="showLogin()">Login</a></p>
+        </form>
+    </div>
+    <div class="container hidden" id="home-page">
+        <div class="home-container">
+            <h1>Welcome to the Home Page</h1>
+            <p class="highlight">Hallo Adelia Dihyan Calysta Suseno jangan lupa makan bub nanti atit 😭</p>
+            <button class="btn btn-primary" onclick="logout()">Logout</button>
+            <button class="btn btn-success" onclick="sendToWhatsApp()">Send Answer to WhatsApp</button>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; <span id="year"></span> by <a href="https://www.instagram.com/h.arrhmn" target="_blank">Kall</a>. All
+            rights reserved.</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+            const loggedInUser = localStorage.getItem('loggedInUser');
+            if (loggedInUser) {
+                showHomePage();
+            }
+            document.getElementById('year').textContent = new Date().getFullYear();
+        });
+
+        function showRegister() {
+            document.getElementById('login-form').classList.add('hidden');
+            document.getElementById('register-form').classList.remove('hidden');
+        }
+
+        function showLogin() {
+            document.getElementById('register-form').classList.add('hidden');
+            document.getElementById('login-form').classList.remove('hidden');
+        }
+
+        function register(event) {
+            event.preventDefault();
+            const name = document.getElementById('register-name').value;
+            const email = document.getElementById('register-email').value;
+            const password = document.getElementById('register-password').value;
+
+            if (!name || !email || !password) {
+                Swal.fire('Error', 'Please fill in all fields.', 'error');
+                return;
+            }
+
+            // Check if email or name already exists
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                const user = JSON.parse(localStorage.getItem(key));
+                if (user.email === email) {
+                    Swal.fire('Error', 'Email is already in use.', 'error');
+                    return;
+                }
+                if (user.name === name) {
+                    Swal.fire('Error', 'Full name is already in use.', 'error');
+                    return;
+                }
+            }
+
+            const user = {
+                name: name,
+                email: email,
+                password: password
+            };
+
+            localStorage.setItem(email, JSON.stringify(user));
+            Swal.fire('Success', 'Registration successful!', 'success').then(() => {
+                showLogin();
+            });
+        }
+
+        function login(event) {
+            event.preventDefault();
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-password').value;
+
+            if (!email || !password) {
+                Swal.fire('Error', 'Please fill in all fields.', 'error');
+                return;
+            }
+
+            const user = JSON.parse(localStorage.getItem(email));
+
+            if (user && user.password === password) {
+                Swal.fire('Success', 'Login successful!', 'success').then(() => {
+                    localStorage.setItem('loggedInUser', email);
+                    showHomePage();
+                });
+            } else {
+                Swal.fire('Error', 'Invalid email or password.', 'error');
+            }
+        }
+
+        function showHomePage() {
+            document.getElementById('login-form').classList.add('hidden');
+            document.getElementById('register-form').classList.add('hidden');
+            const homePage = document.getElementById('home-page');
+            homePage.classList.remove('hidden');
+            homePage.classList.add('fade-in');
+        }
+
+        function logout() {
+            Swal.fire('Success', 'Logout successful!', 'success').then(() => {
+                localStorage.removeItem('loggedInUser');
+                document.getElementById('home-page').classList.add('hidden');
+                document.getElementById('login-form').classList.remove('hidden');
+            });
+        }
+
+        function sendToWhatsApp() {
+            const message = "(Isi jawabanmu).";
+            const phoneNumber = "+6287875369113"; // Nomor telepon dengan kode negara Indonesia
+            const url = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(message)}`;
+            window.open(url, '_blank');
+        }
+    </script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+
+</html>
